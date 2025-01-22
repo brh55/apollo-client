@@ -1,5 +1,21 @@
 # @apollo/client
 
+## 3.13.0-alpha.0
+
+### Minor Changes
+
+- [#12174](https://github.com/apollographql/apollo-client/pull/12174) [`ba5cc33`](https://github.com/apollographql/apollo-client/commit/ba5cc330f8734a989eef71e883861f848388ac0c) Thanks [@jerelmiller](https://github.com/jerelmiller)! - Ensure errors thrown in the `onCompleted` callback from `useMutation` don't call `onError`.
+
+- [#12174](https://github.com/apollographql/apollo-client/pull/12174) [`ba5cc33`](https://github.com/apollographql/apollo-client/commit/ba5cc330f8734a989eef71e883861f848388ac0c) Thanks [@jerelmiller](https://github.com/jerelmiller)! - Reject the mutation promise if errors are thrown in the `onCompleted` callback of `useMutation`.
+
+### Patch Changes
+
+- [#12296](https://github.com/apollographql/apollo-client/pull/12296) [`2422df2`](https://github.com/apollographql/apollo-client/commit/2422df202a7ec71365d5a8ab5b3b554fcf60e4af) Thanks [@Cellule](https://github.com/Cellule)! - Deprecate option `ignoreResults` in `useMutation`.
+
+- [#12292](https://github.com/apollographql/apollo-client/pull/12292) [`3abd944`](https://github.com/apollographql/apollo-client/commit/3abd944e4adde5d94d91133f2bf6ed1c7744f8c5) Thanks [@phryneas](https://github.com/phryneas)! - Remove unused dependency `response-iterator`
+
+- [#12287](https://github.com/apollographql/apollo-client/pull/12287) [`bf313a3`](https://github.com/apollographql/apollo-client/commit/bf313a39d342a73dc3e9b3db9415c71c2573db3f) Thanks [@phryneas](https://github.com/phryneas)! - Fixes an issue where `client.watchFragment`/`useFragment` with `@includes` crashes when a separate cache update writes to the conditionally included fields.
+
 ## 3.12.7
 
 ### Patch Changes
