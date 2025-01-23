@@ -1,16 +1,44 @@
 ---
-title: Setting up Apollo Client with the Next.js App Router
+title: Using Apollo Client with the Next.js App Router with RSC or SSR
 ---
 
-## Using Apollo Client in Next.js React Server components
+Apollo Client can be used in either React Server Components (RSC) or Server Side Rendering (SSR) within Next.js using the `apollo-client-nextjs` package. This package provides key functionality to optimize usage of Apollo Client in both server and client components within dynamic and static renders.
+
+While both will execute the GraphQL on the server, there are few important notable differences worth considering:
+
+- RSCs will return a non-interactive HTML and are only updated upon server actions or route navigation.
+
+- SSR will perform a "SSR Pass" on the server, where client component are rendered on the server before with the GQL execuction results are sent to the browser. Afterwards, the client components are hydrated in the browser and become interactive and executable.
+
+This is an important distinction when using the `apollo-client-nextjs` package as both RSC and SSR should be treated seperately, and avoid have overlapping data between both. Please refer to [SSR and RSC Introduction](./introduction) for more information.
+
+Hence it's important to determine the level of interactivity required by your application for the appropriate usage pattern.
+
+## Recommendations
+Our recommendation is to use one or a mix of these different approaches depending on your needs and how your components are interweaved.
+
+### 1. Use`useSuspenseQuery` or `useBackgroundQuery` / `useReadQuery` hooks** combined with Client Components to Fetch and Display Data
+
+    These hooks allow GQL operations to be executed on the server during the SSR of your client component. Afterwards, their result will be transported over to the browser, avoiding an additional network request upon rendering. Once hydrated, client components are fully excutable and interactive, meaning they can be immediately be updated upon user interactions or re-rendered based on state updates.
+
+### 2. Render data in Client Components, but do "per route prefetching" with `<PreloadQuery>` in RSC on page level
+
+    The data from that will be transported into your Client Components with the cache updated. The difference here is that on every route navigation, the `PreloadQuery` will run again on the server and data will be transported from your RSC server instead of your GraphQL server. Note, the RSC server might do some additional caching in the middle.
+
+### 3. Render data that will change never (or almost never) in RSC**
+
+    This will be treating the page as static HTML, which doesn't need any client-side live updating.
+
+## Using Apollo Client in Next.js with RSC (React Server Components)
 
 The setup for React Server Components in Next.js is the same as for other React frameworks with RSC support, so for this topic, please refer to the [general RSC documentation](./usage-in-rsc).
 
 The only difference between the instructions on that page and the setup for Next.js is that you will need to use the `@apollo/experimental-nextjs-app-support` package instead of `@apollo/client-react-streaming`.
 
-## Using Apollo Client in Next.js React Client components
+## Using Apollo Client in Next.js React Client components with SSR
 
 If you are using Apollo Client in Client Components in the Next.js App router, you will need to perform some additional setup steps.
+
 That is because the App Router will render your Client Components in an SSR pass when the page is first loaded, and this requires some additional setup to ensure this data is correctly hydrated on the client without causing additional network requests both on SSR server and in the Browser.
 
 ### Prerequisites
